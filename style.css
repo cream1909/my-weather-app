@@ -1,72 +1,234 @@
+/* ============================== */
+/* Theme tokens (Light/Dark)     */
+/* ============================== */
+:root{
+  /* Light (default) */
+  --bg:            #f5f7fb;
+  --panel:         #ffffff;
+  --panel-2:       #f2f6fb;
+  --text:          #0f172a;
+  --muted:         #475569;
+  --accent:        #0ea5a5;   /* teal นุ่ม ๆ */
+  --accent-2:      #22c55e;   /* เขียวมิ้นท์จาง */
+  --ring:          rgba(14,165,165,.35);
+  --shadow:        0 6px 18px rgba(15, 23, 42, .12);
+  --border:        rgba(15, 23, 42, .08);
+}
+
+/* ถ้าเครื่องผู้ใช้ตั้ง Dark mode จะสลับธีมอัตโนมัติ */
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:      #0c1b2a;      /* navy เข้ม แต่นุ่ม */
+    --panel:   #0f2633;
+    --panel-2: #123245;
+    --text:    #e6edf3;
+    --muted:   #a8c0cf;
+    --accent:  #58b6d4;      /* ฟ้าน้ำทะเลนุ่ม */
+    --accent-2:#79d5ac;      /* เขียวมิ้นท์ */
+    --ring:    rgba(88,182,212,.45);
+    --shadow:  0 10px 24px rgba(0,0,0,.35);
+    --border:  rgba(255,255,255,.08);
+  }
+}
+
+/* ============================== */
+/* Global                        */
+/* ============================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
 body {
-    background: #051923;
-    color: #E0E1DD;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, rgba(127, 219, 255, .10), transparent 60%),
+    radial-gradient(800px 500px at 10% 110%, rgba(121, 213, 172, .10), transparent 60%),
+    var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  min-height: 100vh;
+  margin: 0;
+  padding: 24px 12px;
 }
 
+:focus-visible{
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ============================== */
+/* App Frame (กรอบพ่อ)          */
+/* ============================== */
 .app-container {
-    background: #003554;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
+  background: var(--panel);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  width: 100%;
+  max-width: clamp(360px, 92vw, 1100px);
+  text-align: center;
+  margin: 0 auto;
 }
 
+/* ============================== */
+/* Header & Form                 */
+/* ============================== */
 h1 {
-    color: #00A6FB;
+  color: var(--accent);
+  margin: 0 0 .75rem;
+  font-weight: 800;
+  letter-spacing: .2px;
 }
 
 #search-form {
-    display: flex;
-    gap: 0.5rem;
-    margin: 1.5rem 0;
+  display: flex;
+  gap: 0.5rem;
+  margin: 1.25rem 0 0.5rem;
 }
 
 #city-input {
-    flex-grow: 1;
-    padding: 0.75rem;
-    border: 1px solid #006494;
-    border-radius: 0.5rem;
-    background: #051923;
-    color: #E0E1DD;
-    font-size: 1rem;
+  flex: 1 1 auto;
+  padding: 0.75rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel-2);
+  color: var(--text);
+  font-size: 1rem;
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+#city-input::placeholder{ color: var(--muted); }
+#city-input:focus{
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--ring);
+  background: var(--panel);
 }
 
 #search-form button {
-    padding: 0.75rem 1rem;
-    background-color: #00A6FB;
-    color: #051923;
-    border: none;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s;
+  padding: 0.75rem 1rem;
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter .15s ease, transform .05s ease;
+}
+#search-form button:hover { filter: brightness(0.95); }
+#search-form button:active { transform: translateY(1px); }
+
+/* ============================== */
+/* Weather Info                  */
+/* ============================== */
+#weather-info-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 6px;
 }
 
-#search-form button:hover {
-    background-color: #0582CA;
-}
-
-.weather-info {
-    margin-top: 1.5rem;
-    min-height: 150px;
-}
-
+.weather-info { margin-top: 1.25rem; min-height: 150px; }
 .weather-info .temp {
-    font-size: 3rem;
-    font-weight: bold;
-    margin: 0.5rem 0;
+  font-size: clamp(2.4rem, 4vw, 3rem);
+  font-weight: 800;
+  margin: .5rem 0;
+}
+.error { color: #ef4444; font-weight: 700; }
+
+/* ============================== */
+/* Forecast (การ์ดเท่าๆ กัน)     */
+/* ============================== */
+.forecast {
+  display: grid;
+  width: 100%;
+  gap: 16px;
+  padding: 8px 6px;
+  margin-top: 16px;
+  grid-template-columns: repeat(5, 1fr);
+}
+@media (max-width: 1200px) { .forecast { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 980px)  { .forecast { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 700px)  { .forecast { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 430px)  { .forecast { grid-template-columns: 1fr; } }
+
+/* ============================== */
+/* Card                          */
+/* ============================== */
+.card-day {
+  width: 100%;
+  background: var(--panel-2);
+  color: var(--text);
+  border-radius: 14px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0,0,0,.10);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+.card-day:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,.16);
 }
 
-.error {
-    color: #ff4d4d;
-    font-weight: bold;
+.card-day img   { width: 40px; height: 40px; }
+.card-day .date { font-weight: 700; font-size: .95rem; }
+.card-day .dow  { color: var(--muted); font-size: .9rem; }
+.card-day .temp { font-size: 1rem; font-weight: 700; }
+.card-day .desc { color: var(--muted); text-align: center; font-size: .9rem; }
+
+/* บังคับอุณหภูมิในการ์ดให้เล็กเสมอเมื่อมีคลาสนี้ใน HTML */
+.temp--sm { font-size: 1rem !important; font-weight: 700; line-height: 1.2; }
+
+/* ============================== */
+/* Small tweaks                  */
+/* ============================== */
+@media (max-width: 560px) {
+  .app-container { padding: 1.25rem; border-radius: 12px; }
+  .weather-info .temp { font-size: clamp(2rem, 6vw, 2.5rem); }
+}
+/* ===== Background images (weather + city) ===== */
+body { position: relative; }
+
+body::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+
+  /* weather fallback */
+  --bg-url: url("images/bg-default.jpg");
+  /* city can override weather; if not set, use weather */
+  --bg-city-url: var(--bg-url);
+
+  background-image:
+    radial-gradient(1200px 600px at 50% -10%, rgba(127, 219, 255, .12), transparent 60%),
+    radial-gradient(800px 500px at 10% 110%, rgba(121, 213, 172, .10), transparent 60%),
+    linear-gradient(to bottom, rgba(0,0,0,.15), rgba(0,0,0,.15)),
+    var(--bg-city-url);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  filter: saturate(.9) brightness(.9);
+}
+
+/* weather keys */
+body[data-bg="sunny"]::before  { --bg-url: url("images/bg-sunny.jpg"); }
+body[data-bg="rainy"]::before  { --bg-url: url("images/bg-rainy.jpg"); }
+body[data-bg="cloudy"]::before { --bg-url: url("images/bg-cloudy.jpg"); }
+body[data-bg="night"]::before  { --bg-url: url("images/bg-night.jpg"); }
+
+/* city keys (override when present) */
+body[data-city="bangkok"]::before   { --bg-city-url: url("images/bg-bangkok.jpg"); }
+body[data-city="chiangmai"]::before { --bg-city-url: url("images/bg-chiangmai.jpg"); }
+body[data-city="chiangrai"]::before { --bg-city-url: url("images/bg-chiangrai.jpg"); }
+body[data-city="phuket"]::before    { --bg-city-url: url("images/bg-phuket.jpg"); }
+
+@media (max-width: 600px){
+  body::before{ filter: saturate(.85) brightness(.85); }
 }
